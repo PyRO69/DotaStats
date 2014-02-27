@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black" >
+
+    <ImageView 
+        android:id="@+id/herodisplaypic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        />
+
+    <TextView 
+        android:id="@+id/herotitle"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/white"
+        android:layout_toRightOf="@id/herodisplaypic"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:textSize="20sp"
+
+        />
+    <TextView
+        android:id="@+id/numberofmatches"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/herodisplaypic"
+        android:layout_below="@id/herotitle"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+		android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/herowinrate"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/herodisplaypic"
+        android:layout_below="@id/numberofmatches"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+		android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/herokda"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/herodisplaypic"
+        android:layout_below="@id/herowinrate"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+		android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        />
+
+
+</RelativeLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black" >
+    
+	<ImageView 
+        android:id="@+id/heroimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:contentDescription="HERO IMAGE"
+        android:src="@drawable/profile"
+        />
+    
+    <TextView 
+        android:id="@+id/heroname"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:textColor="@android:color/white"
+        android:layout_toRightOf="@id/heroimage"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Played as: Lifestealer"
+        android:textIsSelectable="false"
+        
+        />
+    
+    <TextView
+        android:id="@+id/matchid"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_toRightOf="@id/heroimage"
+        android:layout_below="@id/heroname"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+		android:textIsSelectable="false"
+		android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="Match ID: 656565656"
+        
+        />
+    
+</RelativeLayout>
