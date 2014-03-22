@@ -10,13 +10,21 @@ import java.util.concurrent.Callable;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+/*
+ * Callable to implement the Image download functionality on a separate thread.
+ * This ensures we can hand over the download task to a background thread and then
+ * receive the image once it is downloaded. Ensures the main UI thread is not burdened.
+ * 
+ * @author swaroop
+ */
 public class DownloadImageCallable implements Callable<Bitmap> {
 
-	private String downloadLink;
+	private final String downloadLink;
 
 	public DownloadImageCallable(String link) {
-		downloadLink = link;
+		this.downloadLink = link;
 	}
+
 	@Override
 	public Bitmap call() {
 

@@ -16,14 +16,23 @@ import com.example.dotastats.helperclasses.DownloadResult;
 import com.example.dotastats.helperclasses.HeroResultObject;
 import com.example.dotastats.parsing.JSoupCleaner;
 
+/*
+ * The heroes Tab to display all the Hero Info. 
+ * 
+ * @author swaroop
+ */
 public class HeroesTabActivity extends ListFragment {
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		//Get the Parsed Data for the Passed Intent.
+
 		DownloadResult result = JSoupCleaner.getHerosPlayed(getActivity().getIntent().getExtras().getString("LINK") + "/heroes");
-		if(result.isFailure() || result.isRedirected()) {
+
+		//If the Result failed, Toast a fail message and close the activity.
+		if(result == null || result.isFailure() || result.isRedirected()) {
 
 			Toast.makeText(getActivity(), "Failed to Retrieve List.", Toast.LENGTH_SHORT).show();
 			getActivity().finish();
@@ -33,7 +42,8 @@ public class HeroesTabActivity extends ListFragment {
 
 			HeroResultObject[] results = new HeroResultObject[heroList.size()];
 
-			//GetImageFromURL.getImageFromURL(heroList.get(i).get("IMAGE_LINK").toString()) instead of the null
+			// Since the Game has close to a hundred Heroes, downloading all the images is too expensive
+			// and not worth the effort. So the heroes will be a list with relevant information.
 			for(int i=0; i < heroList.size(); i++) {
 				results[i] = new HeroResultObject(null,
 						heroList.get(i).get("HERO_NAME").toString(), heroList.get(i).get("WINRATE").toString(), heroList.get(i).get("KDA").toString(),
@@ -49,9 +59,7 @@ public class HeroesTabActivity extends ListFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
 		unbindDrawables(getActivity().findViewById(R.layout.hero_tab));
-
 		System.gc();
 	}
 
@@ -62,7 +70,12 @@ public class HeroesTabActivity extends ListFragment {
 		System.gc();
 	}
 
-	public void unbindDrawables(View view) {
+	/**
+	 * Simple function to unbind Drawables to reduce memory usage when
+	 * views are in the background or closed.
+	 * @param view
+	 */
+	private void unbindDrawables(View view) {
 
 		if(view != null) {
 

@@ -1,7 +1,7 @@
 package com.example.dotastats.parsing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -9,12 +9,17 @@ import android.os.Bundle;
 
 import com.example.dotastats.helperclasses.DownloadResult;
 
+/*
+ * The background Parsing service that the app hooks on to to get all the information.
+ * 
+ * @author swaroop
+ */
 public class ParsingService extends IntentService {
 
 	public static final String NOTIFICATION = "com.example.dotastats.ParsingService";
 
 	public ParsingService() {
-		super("Parsing Service");
+		super("DotaStats Parsing Service");
 	}
 
 	@Override
@@ -30,7 +35,7 @@ public class ParsingService extends IntentService {
 		Intent returnIntent = new Intent(NOTIFICATION);
 
 		DownloadResult result = JSoupCleaner.getNameList(userName);
-		if(result.isFailure()) {
+		if(result == null || result.isFailure()) {
 			broadcastFailure();
 			return;
 		} else if (result.isRedirected()) {
@@ -50,7 +55,7 @@ public class ParsingService extends IntentService {
 	 * @param input
 	 * @return
 	 */
-	private Bundle bundleAllNames(HashMap<String, String> input) {
+	private Bundle bundleAllNames(Map<String, String> input) {
 
 		if(input == null) {
 			System.out.println("Names Hashmap is Null !");

@@ -1,16 +1,17 @@
 package com.example.dotastats.helperclasses;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/*
+ * Common Holder class to hold all the parsed information.
+ * Made immutable and uses a builder to simplify object creation.
+ * 
+ * @author swaroop
+ */
 public class DownloadResult {
-	private boolean isRedirected;
-	private boolean isFailure;
-	private HashMap<String, String> nameList;
-	private HashMap<String, String> userInfo;
-	private HashMap<String, List<String>> matchList;
-	private HashMap<String, List<String>> recordList;
-	private List<HashMap<String, String>> heroesData;
 
 	public static enum RESULT_TYPE {
 		RESULT_TYPE_NAMELIST,
@@ -20,61 +21,113 @@ public class DownloadResult {
 		RESULT_TYPE_HEROES
 	}
 
-	private RESULT_TYPE resultType;
-	private String redirectLink;
+	private final boolean isRedirected;
+	private final boolean isFailure;
+	private final HashMap<String, String> nameList;
+	private final HashMap<String, String> userInfo;
+	private final HashMap<String, List<String>> matchList;
+	private final HashMap<String, List<String>> recordList;
+	private final List<HashMap<String, String>> heroesData;
+	private final RESULT_TYPE resultType;
+	private final String redirectLink;
 
-	public void setRedirectLink(String link) {
-		this.redirectLink =  link;
+	private DownloadResult(DownloadResultBuilder builder) {
+		this.isRedirected = builder.isRedirected;
+		this.isFailure =  builder.isFailure;
+		this.nameList = builder.nameList;
+		this.userInfo = builder.userInfo;
+		this.matchList = builder.matchList;
+		this.recordList = builder.recordList;
+		this.heroesData = builder.heroesData;
+		this.resultType = builder.resultType;
+		this.redirectLink = builder.redirectLink;
 	}
+
 	public String getRedirectLink() {
 		return new String(this.redirectLink);
 	}
+
 	public boolean isRedirected() {
 		return isRedirected;
 	}
-	public void setRedirected(boolean isRedirected) {
-		this.isRedirected = isRedirected;
+
+	public Map<String, String> getNameList() {
+		return (Map<String, String>) Collections.unmodifiableMap(nameList);
 	}
-	public HashMap<String, String> getNameList() {
-		return nameList;
+
+	public Map<String, String> getUserInfo() {
+		return (Map<String,String>) Collections.unmodifiableMap(userInfo);
 	}
-	public void setNameList(HashMap<String, String> nameList) {
-		this.nameList = nameList;
+
+	public Map<String, List<String>> getMatchList() {
+		return (Map<String, List<String>>) Collections.unmodifiableMap(matchList);
 	}
-	public HashMap<String, String> getUserInfo() {
-		return userInfo;
-	}
-	public void setUserInfo(HashMap<String, String> userInfo) {
-		this.userInfo = userInfo;
-	}
-	public HashMap<String, List<String>> getMatchList() {
-		return matchList;
-	}
-	public void setMatchList(HashMap<String, List<String>> matchList) {
-		this.matchList = matchList;
-	}
+
 	public RESULT_TYPE getResultType() {
 		return resultType;
 	}
-	public void setResultType(RESULT_TYPE resultType) {
-		this.resultType = resultType;
-	}
+
 	public boolean isFailure() {
 		return isFailure;
 	}
-	public void setFailure(boolean isFailure) {
-		this.isFailure = isFailure;
+
+	public Map<String, List<String>> getRecordList() {
+		return (Map<String, List<String>>) Collections.unmodifiableMap(recordList);
 	}
-	public HashMap<String, List<String>> getRecordList() {
-		return recordList;
-	}
-	public void setRecordList(HashMap<String, List<String>> recordList) {
-		this.recordList = recordList;
-	}
+
 	public List<HashMap<String, String>> getHeroesData() {
-		return heroesData;
+		return Collections.unmodifiableList(heroesData);
 	}
-	public void setHeroesData(List<HashMap<String, String>> heroesData) {
-		this.heroesData = heroesData;
+
+	public static class DownloadResultBuilder {
+		private boolean isRedirected = false;
+		private boolean isFailure = false;
+		private HashMap<String, String> nameList = null;
+		private HashMap<String, String> userInfo = null;
+		private HashMap<String, List<String>> matchList = null;
+		private HashMap<String, List<String>> recordList = null;
+		private List<HashMap<String, String>> heroesData = null;
+		private RESULT_TYPE resultType = null;
+		private String redirectLink = null;
+		
+		public DownloadResultBuilder redirected(boolean isRedirected) {
+			this.isRedirected = isRedirected;
+			return this;
+		}
+		public DownloadResultBuilder failure(boolean isFailure) {
+			this.isFailure = isFailure;
+			return this;
+		}
+		public DownloadResultBuilder setNameList(HashMap<String, String> nameList) {
+			this.nameList = nameList;
+			return this;
+		}
+		public DownloadResultBuilder setUserInfo(HashMap<String, String> userInfo) {
+			this.userInfo = userInfo;
+			return this;
+		}
+		public DownloadResultBuilder setMatchList(HashMap<String, List<String>> matchList) {
+			this.matchList = matchList;
+			return this;
+		}
+		public DownloadResultBuilder setRecordList(HashMap<String, List<String>> recordList) {
+			this.recordList =  recordList;
+			return this;
+		}
+		public DownloadResultBuilder setHeroesData(List<HashMap<String, String>> heroesData) {
+			this.heroesData = heroesData;
+			return this;
+		}
+		public DownloadResultBuilder setResultType(RESULT_TYPE resultType) {
+			this.resultType = resultType;
+			return this;
+		}
+		public DownloadResultBuilder setRedirectLink(String redirect) {
+			this.redirectLink = redirect;
+			return this;
+		}
+		public DownloadResult build() {
+			return new DownloadResult(this);
+		}
 	}
 }

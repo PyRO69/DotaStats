@@ -1,6 +1,6 @@
 package com.example.dotastats.activities;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +17,11 @@ import com.example.dotastats.helperclasses.DownloadResult;
 import com.example.dotastats.helperclasses.GetImageFromURL;
 import com.example.dotastats.parsing.JSoupCleaner;
 
+/*
+ * User info Tab that displays all the users basic ingame info.
+ * 
+ * @author swaroop
+ */
 public class InfoTabActivity extends Fragment {
 
 	private ImageView profileImage;
@@ -35,16 +40,19 @@ public class InfoTabActivity extends Fragment {
 		record = (TextView) view.findViewById(R.id.recordedmatches);
 		winRate = (TextView) view.findViewById(R.id.winrate);
 
+		// Get the parsed user info from the parser for this user.
 		DownloadResult myResult = JSoupCleaner.getUserInfo(getActivity().getIntent().getExtras().getString("LINK"));
 
-		if(myResult.isFailure()) {
+		// If the result is failure, Toast a fail message and end the activity.
+		// Else, update the view with the information.
+		if(myResult == null || myResult.isFailure()) {
 
 			Toast.makeText(getActivity(), "Failed to acquire User Info. Please try again.", Toast.LENGTH_SHORT).show();
 			getActivity().finish();
 
 		} else {
 
-			HashMap<String, String> userInfo = myResult.getUserInfo();
+			Map<String, String> userInfo = myResult.getUserInfo();
 			profileImage.setImageBitmap(GetImageFromURL.getImageFromURL(userInfo.get("PROFILEIMAGE")));
 			profileName.setText(userInfo.get("PROFILENAME"));
 			record.setText(userInfo.get("RECORD"));
@@ -59,9 +67,7 @@ public class InfoTabActivity extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
 		unbindDrawables(getActivity().findViewById(R.layout.info_tab));
-
 		System.gc();
 	}
 
@@ -72,6 +78,11 @@ public class InfoTabActivity extends Fragment {
 		System.gc();
 	}
 
+	/**
+	 * Simple function to unbind Drawables to reduce memory usage when
+	 * views are in the background or closed.
+	 * @param view
+	 */
 	public void unbindDrawables(View view) {
 
 		if(view != null) {

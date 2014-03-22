@@ -12,6 +12,12 @@ import android.widget.TextView;
 import com.example.dotastats.R;
 import com.example.dotastats.helperclasses.MatchResultObject;
 
+/*
+ * List view adapter to populate all the matches that the user has played
+ * with the Match IDs.
+ * 
+ * @author swaroop
+ */
 public class ListViewAdapterForMatches extends ArrayAdapter<MatchResultObject> {
 
 	private Context context;
@@ -33,8 +39,9 @@ public class ListViewAdapterForMatches extends ArrayAdapter<MatchResultObject> {
 
 		if(myView == null) {
 
-			LayoutInflater myInflater =  ((Activity) context).getLayoutInflater();
-			myView = myInflater.inflate(layoutID, parent, false);
+			// Inflate view and assign to the holder object views for recycle.
+			LayoutInflater myInflater =  ((Activity) this.context).getLayoutInflater();
+			myView = myInflater.inflate(this.layoutID, parent, false);
 			holder = new ResultsHolder();
 			holder.heroName = (TextView) myView.findViewById(R.id.heroname);
 			holder.img = (ImageView) myView.findViewById(R.id.heroimage);
@@ -43,12 +50,10 @@ public class ListViewAdapterForMatches extends ArrayAdapter<MatchResultObject> {
 			myView.setTag(holder);
 
 		} else {
-
 			holder = (ResultsHolder) myView.getTag();
-
 		}
 
-		MatchResultObject thisResult = myMatchResults[position];
+		MatchResultObject thisResult = this.myMatchResults[position];
 
 		holder.heroName.setText("Played as: " + thisResult.getHeroName());
 		holder.img.setImageBitmap(thisResult.getHeroImage());
@@ -58,6 +63,9 @@ public class ListViewAdapterForMatches extends ArrayAdapter<MatchResultObject> {
 	}
 
 
+	/*
+	 * Holder class to simplify the view handling.
+	 */
 	private class ResultsHolder {
 		public ImageView img;
 		public TextView heroName;
