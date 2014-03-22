@@ -24,7 +24,7 @@ public class RecordsTabActivity extends ListFragment {
 		DownloadResult result =  JSoupCleaner.getUserRecords(getActivity().getIntent().getExtras().getString("LINK") + "/records");
 		if(result.isFailure() || result.isRedirected()) {
 
-			Toast.makeText(getActivity(), "Failed to Retrieve Records.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Failed to Retrieve Records. Retry again.", Toast.LENGTH_SHORT).show();
 			getActivity().finish();
 
 		} else {

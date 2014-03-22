@@ -1,16 +1,17 @@
 package com.example.dotastats.helperclasses;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.StrictMode;
+
+import com.example.dotastats.parsing.DownloadImageCallable;
 
 public class GetImageFromURL {
+
+	private static ExecutorService myService = Executors.newFixedThreadPool(1);
 
 	public static Bitmap getImageFromURL(String url) {
 
@@ -19,7 +20,20 @@ public class GetImageFromURL {
 			return null;
 		}
 
-		StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		Future<Bitmap> imageDownload = myService.submit(new DownloadImageCallable(url));
+
+		try {
+			Bitmap myBitmap = imageDownload.get();
+			return myBitmap;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+
+		/*StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 		StrictMode.setThreadPolicy(threadPolicy);
 
 		Bitmap img = null;
@@ -39,6 +53,6 @@ public class GetImageFromURL {
 			System.out.println("IO Exception while getting Image !");
 		}
 
-		return img;
+		return img;*/
 	}
 }

@@ -16,6 +16,7 @@ import org.jsoup.select.Elements;
 import android.os.StrictMode;
 
 import com.example.dotastats.helperclasses.DownloadResult;
+import com.example.dotastats.helperclasses.DownloadResult.RESULT_TYPE;
 
 public class JSoupCleaner {
 
@@ -25,6 +26,7 @@ public class JSoupCleaner {
 	private static final int RESPONSE_SUCCESS = 1;
 	private static final int RESPONSE_REDIRECT = 2;
 	private static final int RESPONSE_FAILURE = 4;
+	private static final int TIMEOUT = 5000;// 5 second Wait.
 	
 	/**
 	 * Returns the Downloaded Document from the
@@ -43,22 +45,24 @@ public class JSoupCleaner {
 		}
 
 		try {
-			response = Jsoup.connect(link).followRedirects(false).execute();
-			if(response.statusCode() == HttpURLConnection.HTTP_MOVED_PERM || 
-					response.statusCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
-				return RESPONSE_REDIRECT;
+			response = Jsoup.connect(link).followRedirects(false).timeout(TIMEOUT).execute();
+			if(response != null) {
+				if(response.statusCode() == HttpURLConnection.HTTP_MOVED_PERM || 
+						response.statusCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+					return RESPONSE_REDIRECT;
+				} else {
+					return RESPONSE_SUCCESS;
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Downloading the Document Failed !");
-			return RESPONSE_FAILURE;
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Exception in trying to download Page !");
-			return RESPONSE_FAILURE;
 		}
 
-		return RESPONSE_SUCCESS;
+		return RESPONSE_FAILURE;
 	}
 	
 	/**
@@ -85,7 +89,7 @@ public class JSoupCleaner {
 		DownloadResult myResult = new DownloadResult();
 		myResult.setFailure(false);
 		myResult.setRedirected(false);
-		myResult.setResultType(DownloadResult.RESULT_TYPE_NAMELIST);
+		myResult.setResultType(RESULT_TYPE.RESULT_TYPE_NAMELIST);
 		myResult.setNameList(namesAndPages);
 
 		return myResult;
@@ -116,11 +120,17 @@ public class JSoupCleaner {
 
 		} 
 
-		return sendResponse(status, DownloadResult.RESULT_TYPE_NAMELIST);
+		return sendResponse(status, RESULT_TYPE.RESULT_TYPE_NAMELIST);
 
 	}
 
-	private static DownloadResult sendResponse(int status, int resultType) {
+	/**
+	 * Sends a Response if the result is a redirect or a Failure.
+	 * @param status
+	 * @param resultType
+	 * @return
+	 */
+	private static DownloadResult sendResponse(int status, RESULT_TYPE resultType) {
 		DownloadResult myResult =  new DownloadResult();
 		myResult.setResultType(resultType);
 		if(status == RESPONSE_REDIRECT) {
@@ -158,7 +168,7 @@ public class JSoupCleaner {
 		DownloadResult myResult = new DownloadResult();
 		myResult.setFailure(false);
 		myResult.setRedirected(false);
-		myResult.setResultType(DownloadResult.RESULT_TYPE_USERINFO);
+		myResult.setResultType(RESULT_TYPE.RESULT_TYPE_USERINFO);
 		myResult.setUserInfo(info);
 
 		return myResult;
@@ -189,7 +199,7 @@ public class JSoupCleaner {
 			}
 		} 
 
-		return sendResponse(status, DownloadResult.RESULT_TYPE_USERINFO);
+		return sendResponse(status, RESULT_TYPE.RESULT_TYPE_USERINFO);
 
 	}
 
@@ -217,7 +227,7 @@ public class JSoupCleaner {
 			}
 		}
 
-		return sendResponse(status, DownloadResult.RESULT_TYPE_MATCHLIST);
+		return sendResponse(status, RESULT_TYPE.RESULT_TYPE_MATCHLIST);
 	}
 
 	/**
@@ -262,7 +272,7 @@ public class JSoupCleaner {
 		DownloadResult myResult = new DownloadResult();
 		myResult.setFailure(false);
 		myResult.setRedirected(false);
-		myResult.setResultType(DownloadResult.RESULT_TYPE_MATCHLIST);
+		myResult.setResultType(RESULT_TYPE.RESULT_TYPE_MATCHLIST);
 		myResult.setMatchList(matchLists);
 
 		return myResult;
@@ -281,11 +291,11 @@ public class JSoupCleaner {
 				return getRecords(response.parse());
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("Get Users Failed.");
+				System.out.println("Get User Records Failed.");
 			}
 		}
 
-		return sendResponse(status, DownloadResult.RESULT_TYPE_RECORDS);
+		return sendResponse(status, RESULT_TYPE.RESULT_TYPE_RECORDS);
 	}
 
 	private static DownloadResult getRecords(Document fetchedDocument) {
@@ -313,7 +323,7 @@ public class JSoupCleaner {
 		DownloadResult myResult = new DownloadResult();
 		myResult.setFailure(false);
 		myResult.setRedirected(false);
-		myResult.setResultType(DownloadResult.RESULT_TYPE_RECORDS);
+		myResult.setResultType(RESULT_TYPE.RESULT_TYPE_RECORDS);
 		myResult.setRecordList(records);
 
 		return myResult;
@@ -338,7 +348,7 @@ public class JSoupCleaner {
 			}
 		}
 
-		return sendResponse(status, DownloadResult.RESULT_TYPE_HEROES);
+		return sendResponse(status, RESULT_TYPE.RESULT_TYPE_HEROES);
 	}
 
 	private static DownloadResult getHeroes(Document fetchedDocument) {
@@ -371,7 +381,7 @@ public class JSoupCleaner {
 		DownloadResult myResult = new DownloadResult();
 		myResult.setFailure(false);
 		myResult.setRedirected(false);
-		myResult.setResultType(DownloadResult.RESULT_TYPE_HEROES);
+		myResult.setResultType(RESULT_TYPE.RESULT_TYPE_HEROES);
 		myResult.setHeroesData(returnData);
 
 		return myResult;

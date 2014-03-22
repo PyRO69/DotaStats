@@ -11,12 +11,16 @@ public class DownloadResult {
 	private HashMap<String, List<String>> matchList;
 	private HashMap<String, List<String>> recordList;
 	private List<HashMap<String, String>> heroesData;
-	public static final int RESULT_TYPE_NAMELIST = 1;
-	public static final int RESULT_TYPE_USERINFO = 2;
-	public static final int RESULT_TYPE_MATCHLIST = 4;
-	public static final int RESULT_TYPE_RECORDS = 8;
-	public static final int RESULT_TYPE_HEROES = 16;
-	private int resultType;
+
+	public static enum RESULT_TYPE {
+		RESULT_TYPE_NAMELIST,
+		RESULT_TYPE_USERINFO,
+		RESULT_TYPE_MATCHLIST,
+		RESULT_TYPE_RECORDS,
+		RESULT_TYPE_HEROES
+	}
+
+	private RESULT_TYPE resultType;
 	private String redirectLink;
 
 	public void setRedirectLink(String link) {
@@ -49,10 +53,10 @@ public class DownloadResult {
 	public void setMatchList(HashMap<String, List<String>> matchList) {
 		this.matchList = matchList;
 	}
-	public int getResultType() {
+	public RESULT_TYPE getResultType() {
 		return resultType;
 	}
-	public void setResultType(int resultType) {
+	public void setResultType(RESULT_TYPE resultType) {
 		this.resultType = resultType;
 	}
 	public boolean isFailure() {
