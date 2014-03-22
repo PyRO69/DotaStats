@@ -10,6 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/*
+ * List view adapter to populate all the users Records.
+ * 
+ * @author swaroop
+ */
 public class ListViewAdapterForRecords extends ArrayAdapter<String> {
 
 	private Context context;
@@ -31,18 +36,17 @@ public class ListViewAdapterForRecords extends ArrayAdapter<String> {
 		TextView holder = null;
 
 		if(myView == null) {
-			LayoutInflater myInflater = ((Activity) context).getLayoutInflater();
-			myView = myInflater.inflate(layoutID, parent, false);
+			LayoutInflater myInflater = ((Activity) this.context).getLayoutInflater();
+			myView = myInflater.inflate(this.layoutID, parent, false);
 			holder = (TextView) myView.findViewById(R.id.record);
 			myView.setTag(holder);
 		} else {
 			holder = (TextView) myView.getTag();
 		}
 
-		holder.setText(recordData[position]);
+		holder.setText(this.recordData[position]);
 
 		return myView;
 	}
-
 
 }

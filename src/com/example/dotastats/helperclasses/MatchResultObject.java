@@ -2,39 +2,35 @@ package com.example.dotastats.helperclasses;
 
 import android.graphics.Bitmap;
 
+/*
+ * Immutable Class to hold the Match Results to be
+ * passed to the Activity from the Parser.
+ * 
+ * @author swaroop
+ */
+
 public class MatchResultObject {
 
-	private Bitmap heroImage;
-	private String heroName;
-	private String matchID;
+	private final Bitmap heroImage;
+	private final String heroName;
+	private final String matchID;
 	
 	public MatchResultObject(Bitmap img, String heroName, String matchID) {
-		this.setHeroImage(img);
-		this.setHeroName(heroName);
-		this.setMatchID(matchID);
+		this.heroImage = img;
+		this.heroName = heroName;
+		this.matchID = matchID;
 	}
 
 	public Bitmap getHeroImage() {
 		return heroImage;
 	}
 
-	public void setHeroImage(Bitmap heroImage) {
-		this.heroImage = heroImage;
-	}
-
 	public String getHeroName() {
 		return heroName;
-	}
-
-	public void setHeroName(String heroName) {
-		this.heroName = heroName;
 	}
 
 	public String getMatchID() {
 		return matchID;
 	}
 
-	public void setMatchID(String matchID) {
-		this.matchID = matchID;
-	}
 }

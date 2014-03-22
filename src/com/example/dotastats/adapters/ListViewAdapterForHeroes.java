@@ -6,12 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dotastats.R;
 import com.example.dotastats.helperclasses.HeroResultObject;
 
+/*
+ * Adapter to populate the List View for all the returned users for a query.
+ * 
+ * @author swaroop
+ */
 public class ListViewAdapterForHeroes extends ArrayAdapter<HeroResultObject> {
 
 	private Context context;
@@ -33,10 +37,10 @@ public class ListViewAdapterForHeroes extends ArrayAdapter<HeroResultObject> {
 
 		if(myView == null) {
 
-			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-			myView = inflater.inflate(layoutID, parent, false);
+			// Inflate the view and assign to the local variables.
+			LayoutInflater inflater = ((Activity) this.context).getLayoutInflater();
+			myView = inflater.inflate(this.layoutID, parent, false);
 			holder = new DataHolder();
-			holder.img = (ImageView) myView.findViewById(R.id.herodisplaypic);
 			holder.heroName = (TextView) myView.findViewById(R.id.herotitle);
 			holder.heroWinRate = (TextView) myView.findViewById(R.id.herowinrate);
 			holder.kda = (TextView) myView.findViewById(R.id.herokda);
@@ -49,9 +53,9 @@ public class ListViewAdapterForHeroes extends ArrayAdapter<HeroResultObject> {
 
 		}
 
-		HeroResultObject currentResult = myHeroResults[position];
+		// Set the information.
+		HeroResultObject currentResult = this.myHeroResults[position];
 		holder.heroName.setText("Hero: " + currentResult.getHeroName());
-		//holder.img.setImageBitmap(currentResult.getHeroImage());
 		holder.heroWinRate.setText("Win Rate: " + currentResult.getHeroWinRate());
 		holder.kda.setText("KDA: " + currentResult.getKda());
 		holder.numMatches.setText("Matches Played: " + currentResult.getNumMatches());
@@ -59,8 +63,10 @@ public class ListViewAdapterForHeroes extends ArrayAdapter<HeroResultObject> {
 		return myView;
 	}
 
+	/*
+	 * Helper class to hold the view. Can be made immutable ?
+	 */
 	private class DataHolder {
-		public ImageView img;
 		public TextView heroName;
 		public TextView numMatches;
 		public TextView kda;

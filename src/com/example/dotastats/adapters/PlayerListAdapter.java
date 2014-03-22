@@ -9,6 +9,12 @@ import android.widget.TextView;
 
 import com.example.dotastats.R;
 
+/*
+ * List view adapter to populate the usernames that were returned 
+ * for the query
+ * 
+ * @author swaroop
+ */
 public class PlayerListAdapter extends BaseAdapter {
 
 	private Context context;
@@ -22,7 +28,7 @@ public class PlayerListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View gridView;
 
 		if(convertView == null) {
@@ -31,7 +37,7 @@ public class PlayerListAdapter extends BaseAdapter {
 			gridView = inflater.inflate(R.layout.name_grids, null);
 
 			TextView textView =  (TextView) gridView.findViewById(R.id.grid_item_label);
-			textView.setText(playerNames[position]);
+			textView.setText(this.playerNames[position]);
 
 		} else {
 			gridView = (View) convertView;
@@ -43,11 +49,12 @@ public class PlayerListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return playerNames.length;
+		return this.playerNames.length;
 	}
 
 	@Override
 	public Object getItem(int position) {
+		// Is this safe ? Maybe no need to override.
 		return null;
 	}
 

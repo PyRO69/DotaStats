@@ -9,6 +9,13 @@ import android.graphics.Bitmap;
 
 import com.example.dotastats.parsing.DownloadImageCallable;
 
+/*
+ * This class downloads an image given the URL. This is offloaded to a
+ * thread so the main thread is free. This uses the DownloadImage callable
+ * to return the image.
+ * 
+ * @author swaroop
+ */
 public class GetImageFromURL {
 
 	private static ExecutorService myService = Executors.newFixedThreadPool(1);
@@ -32,27 +39,5 @@ public class GetImageFromURL {
 		}
 		
 		return null;
-
-		/*StrictMode.ThreadPolicy threadPolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		StrictMode.setThreadPolicy(threadPolicy);
-
-		Bitmap img = null;
-		try {
-
-			HttpURLConnection myConnection = (HttpURLConnection) new URL(url).openConnection();
-			myConnection.connect();
-			InputStream input = myConnection.getInputStream();
-			img = BitmapFactory.decodeStream(input);
-			myConnection.disconnect();
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-			System.out.println("Malformed URL Exception while getting Image !");
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("IO Exception while getting Image !");
-		}
-
-		return img;*/
 	}
 }

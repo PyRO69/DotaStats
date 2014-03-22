@@ -10,9 +10,15 @@ import android.widget.AdapterView;
 
 import com.example.dotastats.R;
 
+/*
+ * Creates a Splash screen when the App is started. This activity
+ * is then destroyed and the main activity takes over.
+ * 
+ * @author swaroop
+ */
 public class SplashActivity extends Activity {
 
-	private final int SPLASH_LENGTH = 1000; //in ms.
+	private final int SPLASH_LENGTH = 1000; //Time to run in milliseconds.
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +26,8 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscreen);
 
-		//This will run for a second and start the main Activity.
+		//This will run for a second and start the main Activity and finish the splash
+		// screen activity.
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
@@ -36,9 +43,7 @@ public class SplashActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
 		unbindDrawables(findViewById(R.layout.splashscreen));
-
 		System.gc();
 	}
 
@@ -48,6 +53,11 @@ public class SplashActivity extends Activity {
 		System.gc();
 	}
 
+	/**
+	 * Simple function to unbind Drawables to reduce memory usage when
+	 * views are in the background or closed.
+	 * @param view
+	 */
 	public void unbindDrawables(View view) {
 
 		if(view != null) {

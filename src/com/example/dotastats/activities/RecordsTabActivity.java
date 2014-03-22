@@ -15,14 +15,23 @@ import com.example.dotastats.adapters.ListViewAdapterForRecords;
 import com.example.dotastats.helperclasses.DownloadResult;
 import com.example.dotastats.parsing.JSoupCleaner;
 
+/*
+ * Records tab activity to display all the Users Records in Dota.
+ * These are All time records only.
+ * 
+ * @author swaroop
+ */
 public class RecordsTabActivity extends ListFragment {
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		// Get Parse data and if failure, Toast a fail message. Otherwise create the record
+		// strings on the fly and pass to the adapter to fill the view.
 		DownloadResult result =  JSoupCleaner.getUserRecords(getActivity().getIntent().getExtras().getString("LINK") + "/records");
-		if(result.isFailure() || result.isRedirected()) {
+
+		if(result == null || result.isFailure() || result.isRedirected()) {
 
 			Toast.makeText(getActivity(), "Failed to Retrieve Records. Retry again.", Toast.LENGTH_SHORT).show();
 			getActivity().finish();
@@ -34,8 +43,11 @@ public class RecordsTabActivity extends ListFragment {
 			List<String> recordVals = records.get("RECORD_VALUES");
 
 			String[] recordData = new String[recordNames.size()];
+			StringBuilder record =  new StringBuilder();
 			for(int i=0; i < recordNames.size(); i++) {
-				recordData[i] = recordNames.get(i) + ": " + recordVals.get(i);
+				// Build the string and then clear the StringBuilder to reuse. This is less expensive and needs no CPU.
+				recordData[i] = record.append(recordNames.get(i)).append(": ").append(recordVals.get(i)).toString();
+				record.setLength(0);
 			}
 
 			ListViewAdapterForRecords myAdapter = new ListViewAdapterForRecords(getActivity(), R.layout.record_list_view, recordData);
@@ -47,9 +59,7 @@ public class RecordsTabActivity extends ListFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
 		unbindDrawables(getActivity().findViewById(R.layout.record_list_view));
-
 		System.gc();
 	}
 
@@ -60,6 +70,11 @@ public class RecordsTabActivity extends ListFragment {
 		System.gc();
 	}
 
+	/**
+	 * Simple function to unbind Drawables to reduce memory usage when
+	 * views are in the background or closed.
+	 * @param view
+	 */
 	public void unbindDrawables(View view) {
 
 		if(view != null) {

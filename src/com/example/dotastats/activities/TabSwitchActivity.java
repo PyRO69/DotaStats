@@ -6,6 +6,12 @@ import android.support.v4.app.FragmentTabHost;
 
 import com.example.dotastats.R;
 
+/*
+ * This is the fragment activity that creates all the tabs and handles the
+ * switching between tabs as well as passing the intent to the correct tabs.
+ * 
+ * @author swaroop
+ */
 public class TabSwitchActivity extends FragmentActivity {
 
 	private FragmentTabHost myTabHost;
@@ -20,6 +26,7 @@ public class TabSwitchActivity extends FragmentActivity {
 		//System.out.println(getIntent().getStringExtra("LINK"));
 		InfoTabActivity myInfoFragment = new InfoTabActivity();
 		Bundle myBundle = new Bundle();
+		// Pass on the link passed from the calling activity to the tabs.
 		myBundle.putString("LINK", getIntent().getStringExtra("LINK"));
 		myInfoFragment.setArguments(myBundle);
 

@@ -9,12 +9,17 @@ import android.os.Bundle;
 
 import com.example.dotastats.helperclasses.DownloadResult;
 
+/*
+ * The background Parsing service that the app hooks on to to get all the information.
+ * 
+ * @author swaroop
+ */
 public class ParsingService extends IntentService {
 
 	public static final String NOTIFICATION = "com.example.dotastats.ParsingService";
 
 	public ParsingService() {
-		super("Parsing Service");
+		super("DotaStats Parsing Service");
 	}
 
 	@Override
@@ -30,7 +35,7 @@ public class ParsingService extends IntentService {
 		Intent returnIntent = new Intent(NOTIFICATION);
 
 		DownloadResult result = JSoupCleaner.getNameList(userName);
-		if(result.isFailure()) {
+		if(result == null || result.isFailure()) {
 			broadcastFailure();
 			return;
 		} else if (result.isRedirected()) {

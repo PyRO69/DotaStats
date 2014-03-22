@@ -16,6 +16,12 @@ import com.example.dotastats.helperclasses.DownloadResult;
 import com.example.dotastats.helperclasses.GetImageFromURL;
 import com.example.dotastats.parsing.JSoupCleaner;
 
+/*
+ * This activity is a standalone for teams. The teams page
+ * has only limited info and we display only that infomation.
+ * 
+ * @author swaroop
+ */
 public class TeamInfoActivity extends Activity {
 
 	private ImageView teamImage;
@@ -27,11 +33,13 @@ public class TeamInfoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.team_info);
-		String Link =  getIntent().getExtras().getString("LINK");
 		assignViews();
 
-		DownloadResult myResults = JSoupCleaner.getUserInfo(Link);
-		if(myResults.isFailure()) {
+		// Get the Team info. If this fails, toast a message and finish the activity
+		// otherwise, update the view with the information.
+		DownloadResult myResults = JSoupCleaner.getUserInfo(getIntent().getExtras().getString("LINK"));
+
+		if(myResults == null || myResults.isFailure()) {
 
 			Toast.makeText(this, "Failed to acquire Team Info. Please try again.", Toast.LENGTH_SHORT).show();
 			this.finish();
@@ -48,6 +56,9 @@ public class TeamInfoActivity extends Activity {
 
 	}
 
+	/**
+	 * Assign the views to the variables.
+	 */
 	private void assignViews() {
 		teamImage = (ImageView) findViewById(R.id.teamimage);
 		teamName = (TextView) findViewById(R.id.teamname);
@@ -58,9 +69,7 @@ public class TeamInfoActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
 		unbindDrawables(findViewById(R.layout.team_info));
-
 		System.gc();
 	}
 
@@ -71,6 +80,11 @@ public class TeamInfoActivity extends Activity {
 		System.gc();
 	}
 
+	/**
+	 * Simple function to unbind Drawables to reduce memory usage when
+	 * views are in the background or closed.
+	 * @param view
+	 */
 	public void unbindDrawables(View view) {
 
 		if(view != null) {
